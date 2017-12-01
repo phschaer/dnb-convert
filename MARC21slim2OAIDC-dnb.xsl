@@ -27,9 +27,63 @@
 		<xsl:variable name="leader7" select="substring($leader,8,1)"/>
 		<xsl:variable name="controlField008" select="marc:controlfield[@tag=008]"/>
 		
+		
+		<!-- 001 - DNB-ID -->
+		
 		<id>
 			<xsl:value-of select="marc:controlfield[@tag=001]"/>
 		</id>
+		
+		<!-- 010 - ISBN -->
+		
+		<xsl:for-each select="marc:datafield[@tag=020]">
+			<isbn>
+				<!--><xsl:text>URN:ISBN:</xsl:text>-->
+				<xsl:value-of select="marc:subfield[@code='a']"/>
+			</isbn>
+		</xsl:for-each>		
+
+		<!-- 082 - DDC -->
+		
+		<xsl:for-each select="marc:datafield[@tag=082]">
+			<subject-ddc>
+				<xsl:call-template name="subfieldSelect">
+					<xsl:with-param name="codes">a</xsl:with-param>
+				</xsl:call-template>
+			</subject-ddc>
+		</xsl:for-each>
+		
+		<!-- 083 - Sachgruppe -->
+		
+		<xsl:for-each select="marc:datafield[@tag=083]">
+			<subject-sachgruppe>
+				<xsl:call-template name="subfieldSelect">
+					<xsl:with-param name="codes">a</xsl:with-param>
+				</xsl:call-template>
+			</subject-sachgruppe>
+		</xsl:for-each>
+		
+		<!-- 100 - Person : Autor -->
+		
+		<xsl:for-each select="marc:datafield[@tag=100]">
+			<author>
+				<xsl:call-template name="subfieldSelect">
+					<xsl:with-param name="codes">a</xsl:with-param>
+				</xsl:call-template>
+			</author>
+		</xsl:for-each>
+
+		<!-- 700 - Person : Herausgeber -->
+		
+		<xsl:for-each select="marc:datafield[@tag=700]">
+			<editor>
+				<xsl:call-template name="subfieldSelect">
+					<xsl:with-param name="codes">a</xsl:with-param>
+				</xsl:call-template>
+			</editor>
+		</xsl:for-each>
+
+		<!-- 245 - Titel und Titelzusatz -->		
 		
 		<xsl:for-each select="marc:datafield[@tag=245]">
 			<title>
@@ -39,21 +93,7 @@
 			</title>
 		</xsl:for-each>
 
-		<xsl:for-each select="marc:datafield[@tag=100]">
-			<author>
-				<xsl:call-template name="subfieldSelect">
-					<xsl:with-param name="codes">a</xsl:with-param>
-				</xsl:call-template>
-			</author>
-		</xsl:for-each>
-		
-		<xsl:for-each select="marc:datafield[@tag=700]">
-			<editor>
-				<xsl:call-template name="subfieldSelect">
-					<xsl:with-param name="codes">a</xsl:with-param>
-				</xsl:call-template>
-			</editor>
-		</xsl:for-each>
+		<!-- 264 - Impressum -->				
 		
 		<xsl:for-each select="marc:datafield[@tag=264]">
 			<source>
@@ -63,6 +103,47 @@
 			</source>
 		</xsl:for-each>
 		
+		<!-- 830 - Reihentitel -->	
+		
+		<xsl:for-each select="marc:datafield[@tag=830]">
+			<source-series>
+				<xsl:call-template name="subfieldSelect">
+					<xsl:with-param name="codes">av</xsl:with-param>
+				</xsl:call-template>
+			</source-series>
+		</xsl:for-each>
+					
+		<!-- 600 - Schlagwort-Person -->	
+		
+		<xsl:for-each select="marc:datafield[@tag=600]">
+			<subject-person>
+				<xsl:call-template name="subfieldSelect">
+					<xsl:with-param name="codes">a</xsl:with-param>
+				</xsl:call-template>
+			</subject-person>
+		</xsl:for-each>		
+
+		<!-- 630 - Schlagwort-Person -->	
+		
+		<xsl:for-each select="marc:datafield[@tag=630]">
+			<subject-corp>
+				<xsl:call-template name="subfieldSelect">
+					<xsl:with-param name="codes">a</xsl:with-param>
+				</xsl:call-template>
+			</subject-corp>
+		</xsl:for-each>		
+		
+		<!-- 648 - Schlagwort-Person -->	
+		
+		<xsl:for-each select="marc:datafield[@tag=600]">
+			<subject-time>
+				<xsl:call-template name="subfieldSelect">
+					<xsl:with-param name="codes">a</xsl:with-param>
+				</xsl:call-template>
+			</subject-time>
+		</xsl:for-each>		
+		
+		<!-- 650 - Schlagwort -->			
 		<!-- erweiterter Abschnitt für die Umsetzung der maschinellen Verschlagwortung -->
 		<xsl:for-each select="marc:datafield[@tag=650]">
 			<xsl:choose>
@@ -82,24 +163,9 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:for-each>
-		<!-- END  -->
-		
-		<xsl:for-each select="marc:datafield[@tag=082]">
-			<subject-ddc>
-				<xsl:call-template name="subfieldSelect">
-					<xsl:with-param name="codes">a</xsl:with-param>
-				</xsl:call-template>
-			</subject-ddc>
-		</xsl:for-each>
-		
-		<xsl:for-each select="marc:datafield[@tag=083]">
-			<subject-sachgruppe>
-				<xsl:call-template name="subfieldSelect">
-					<xsl:with-param name="codes">a</xsl:with-param>
-				</xsl:call-template>
-			</subject-sachgruppe>
-		</xsl:for-each>
-		
+
+		<!-- 651 - Schlagwort-Geo -->							
+
 		<xsl:for-each select="marc:datafield[@tag=651]">
 			<subject-geo>
 				<xsl:call-template name="subfieldSelect">
@@ -107,7 +173,9 @@
 				</xsl:call-template>
 			</subject-geo>
 		</xsl:for-each>
-		
+				
+		<!-- 653 - Schlagwort-VLB -->			
+
 		<xsl:for-each select="marc:datafield[@tag=653]">
 			<subject-vlb>
 				<xsl:call-template name="subfieldSelect">
@@ -115,35 +183,36 @@
 				</xsl:call-template>
 			</subject-vlb>
 		</xsl:for-each>
+
+		<!-- 655 - Schlagwort-Form -->			
+		
+		<xsl:for-each select="marc:datafield[@tag=655]">
+			<xsl:if test="subfield[@code=a]/text() != ''">
+				<subject-form>
+					<xsl:call-template name="subfieldSelect">
+						<xsl:with-param name="codes">a</xsl:with-param>
+					</xsl:call-template>
+				</subject-form>
+			</xsl:if>
+		</xsl:for-each>
+
+		<!-- 689 - Schlagwort-RSWK -->			
 		
 		<xsl:for-each select="marc:datafield[@tag=689]">
 			<subject-rswk>
 				<xsl:call-template name="subfieldSelect">
-					<xsl:with-param name="codes">aD</xsl:with-param>
+					<xsl:with-param name="codes">a</xsl:with-param>
 				</xsl:call-template>
 			</subject-rswk>
 		</xsl:for-each>
+				
+		<!-- 856 - Links -->			
 		
-		<xsl:for-each select="marc:datafield[@tag=490]">
-			<source-series>
-				<xsl:call-template name="subfieldSelect">
-					<xsl:with-param name="codes">a</xsl:with-param>
-				</xsl:call-template>
-			</source-series>
-		</xsl:for-each>
-		
-		<!-- default information on identifiers -->
 		<xsl:for-each select="marc:datafield[@tag=856]">
 			<link>
 				<xsl:value-of select="marc:subfield[@code='u']"/>
 			</link>
 		</xsl:for-each>
-		<xsl:for-each select="marc:datafield[@tag=020]">
-			<isbn>
-				<!--><xsl:text>URN:ISBN:</xsl:text>-->
-				<xsl:value-of select="marc:subfield[@code='a']"/>
-			</isbn>
-		</xsl:for-each>
-		<!--</oai_dc>-->
+
 	</xsl:template>
 </xsl:stylesheet>
