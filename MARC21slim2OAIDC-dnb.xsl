@@ -135,7 +135,7 @@
 		
 		<!-- 648 - Schlagwort-Person -->	
 		
-		<xsl:for-each select="marc:datafield[@tag=600]">
+		<xsl:for-each select="marc:datafield[@tag=648]">
 			<subject-time>
 				<xsl:call-template name="subfieldSelect">
 					<xsl:with-param name="codes">a</xsl:with-param>
@@ -186,24 +186,27 @@
 
 		<!-- 655 - Schlagwort-Form -->			
 		
-		<xsl:for-each select="marc:datafield[@tag=655]">
-			<xsl:if test="subfield[@code=a]/text() != ''">
+		<xsl:for-each select="marc:datafield[@tag=655]">			
 				<subject-form>
 					<xsl:call-template name="subfieldSelect">
 						<xsl:with-param name="codes">a</xsl:with-param>
 					</xsl:call-template>
 				</subject-form>
-			</xsl:if>
 		</xsl:for-each>
 
 		<!-- 689 - Schlagwort-RSWK -->			
 		
 		<xsl:for-each select="marc:datafield[@tag=689]">
-			<subject-rswk>
+			<xsl:variable name="rswk">
 				<xsl:call-template name="subfieldSelect">
 					<xsl:with-param name="codes">a</xsl:with-param>
 				</xsl:call-template>
-			</subject-rswk>
+			</xsl:variable>
+			<xsl:if test="normalize-space($rswk) != ''">
+				<subject-rswk>
+					<xsl:value-of select="$rswk" />
+				</subject-rswk>
+			</xsl:if>
 		</xsl:for-each>
 				
 		<!-- 856 - Links -->			
