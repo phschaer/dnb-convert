@@ -18,7 +18,7 @@
 		<xsl:variable name="nodename" select="local-name(.)" />
 		<field> 
 			<xsl:attribute name="name">
-				<xsl:value-of select="$nodename" />
+				<xsl:value-of select="concat($nodename,'_str')" />
 			</xsl:attribute>
 			<xsl:value-of select="." />
 		</field>
