@@ -34,7 +34,7 @@
 			<xsl:value-of select="marc:controlfield[@tag=001]"/>
 		</id>
 		
-		<!-- 010 - ISBN -->
+		<!-- 020 - ISBN -->
 		
 		<xsl:for-each select="marc:datafield[@tag=020]">
 			<isbn>
@@ -112,28 +112,50 @@
 				</xsl:call-template>
 			</source-series>
 		</xsl:for-each>
-					
-		<!-- 600 - Schlagwort-Person -->	
-		
-		<xsl:for-each select="marc:datafield[@tag=600]">
-			<subject-person>
-				<xsl:call-template name="subfieldSelect">
-					<xsl:with-param name="codes">a</xsl:with-param>
-				</xsl:call-template>
-			</subject-person>
-		</xsl:for-each>		
+				
+		<!-- 600 - Schlagwort-Person -->			
 
-		<!-- 630 - Schlagwort-Person -->	
+		<xsl:for-each select="marc:datafield[@tag=600]">
+			<xsl:choose>
+				<xsl:when test="../marc:datafield[@tag=883]/marc:subfield[@code='a'] = 'maschinell gebildet' and marc:subfield[@code='8']/text() = ../marc:datafield[@tag=883]/marc:subfield[@code='8']/text()">
+					<subject-person-auto>
+						<xsl:call-template name="subfieldSelect">
+							<xsl:with-param name="codes">a</xsl:with-param>
+						</xsl:call-template>
+					</subject-person-auto>
+				</xsl:when>
+				<xsl:otherwise>
+					<subject-person>
+						<xsl:call-template name="subfieldSelect">
+							<xsl:with-param name="codes">a</xsl:with-param>
+						</xsl:call-template>
+					</subject-person>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:for-each>
+
+		<!-- 630 - Schlagwort-Körperschaft -->	
 		
 		<xsl:for-each select="marc:datafield[@tag=630]">
-			<subject-corp>
-				<xsl:call-template name="subfieldSelect">
-					<xsl:with-param name="codes">a</xsl:with-param>
-				</xsl:call-template>
-			</subject-corp>
-		</xsl:for-each>		
+			<xsl:choose>
+				<xsl:when test="../marc:datafield[@tag=883]/marc:subfield[@code='a'] = 'maschinell gebildet' and marc:subfield[@code='8']/text() = ../marc:datafield[@tag=883]/marc:subfield[@code='8']/text()">
+					<subject-corp-auto>
+						<xsl:call-template name="subfieldSelect">
+							<xsl:with-param name="codes">a</xsl:with-param>
+						</xsl:call-template>
+					</subject-corp-auto>
+				</xsl:when>
+				<xsl:otherwise>
+					<subject-corp>
+						<xsl:call-template name="subfieldSelect">
+							<xsl:with-param name="codes">a</xsl:with-param>
+						</xsl:call-template>
+					</subject-corp>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:for-each>
 		
-		<!-- 648 - Schlagwort-Person -->	
+		<!-- 648 - Schlagwort-Zeit -->	
 		
 		<xsl:for-each select="marc:datafield[@tag=648]">
 			<subject-time>
@@ -144,20 +166,20 @@
 		</xsl:for-each>		
 		
 		<!-- 650 - Schlagwort -->			
-		<!-- erweiterter Abschnitt für die Umsetzung der maschinellen Verschlagwortung -->
+
 		<xsl:for-each select="marc:datafield[@tag=650]">
 			<xsl:choose>
 				<xsl:when test="../marc:datafield[@tag=883]/marc:subfield[@code='a'] = 'maschinell gebildet' and marc:subfield[@code='8']/text() = ../marc:datafield[@tag=883]/marc:subfield[@code='8']/text()">
 					<subject-auto>
 						<xsl:call-template name="subfieldSelect">
-							<xsl:with-param name="codes">abcdq</xsl:with-param>
+							<xsl:with-param name="codes">a</xsl:with-param>
 						</xsl:call-template>
 					</subject-auto>
 				</xsl:when>
 				<xsl:otherwise>
 					<subject-intel>
 						<xsl:call-template name="subfieldSelect">
-							<xsl:with-param name="codes">abcdq</xsl:with-param>
+							<xsl:with-param name="codes">a</xsl:with-param>
 						</xsl:call-template>
 					</subject-intel>
 				</xsl:otherwise>
@@ -167,11 +189,22 @@
 		<!-- 651 - Schlagwort-Geo -->							
 
 		<xsl:for-each select="marc:datafield[@tag=651]">
-			<subject-geo>
-				<xsl:call-template name="subfieldSelect">
-					<xsl:with-param name="codes">a</xsl:with-param>
-				</xsl:call-template>
-			</subject-geo>
+			<xsl:choose>
+				<xsl:when test="../marc:datafield[@tag=883]/marc:subfield[@code='a'] = 'maschinell gebildet' and marc:subfield[@code='8']/text() = ../marc:datafield[@tag=883]/marc:subfield[@code='8']/text()">
+					<subject-geo-auto>
+						<xsl:call-template name="subfieldSelect">
+							<xsl:with-param name="codes">a</xsl:with-param>
+						</xsl:call-template>
+					</subject-geo-auto>
+				</xsl:when>
+				<xsl:otherwise>
+					<subject-geo>
+						<xsl:call-template name="subfieldSelect">
+							<xsl:with-param name="codes">a</xsl:with-param>
+						</xsl:call-template>
+					</subject-geo>
+				</xsl:otherwise>
+			</xsl:choose>
 		</xsl:for-each>
 				
 		<!-- 653 - Schlagwort-VLB -->			
