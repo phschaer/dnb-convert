@@ -16,12 +16,27 @@
 	
 	<xsl:template match="*">
 		<xsl:variable name="nodename" select="local-name(.)" />
-		<field> 
-			<xsl:attribute name="name">
-				<xsl:value-of select="concat($nodename,'_str')" />
-			</xsl:attribute>
-			<xsl:value-of select="." />
-		</field>
+		<xsl:choose>
+			<xsl:when test="$nodename='id'">
+				<field name="id"> 
+					<xsl:value-of select="." />
+				</field>
+			</xsl:when>
+			<xsl:otherwise>
+				<field> 
+					<xsl:attribute name="name">
+						<xsl:value-of select="concat($nodename,'_txt_de')" />
+					</xsl:attribute>
+					<xsl:value-of select="." />
+				</field>				
+				<field> 
+					<xsl:attribute name="name">
+						<xsl:value-of select="concat($nodename,'_str')" />
+					</xsl:attribute>
+					<xsl:value-of select="." />
+				</field>								
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 	
 
